@@ -103,6 +103,8 @@ ggplot(avg_estimate_results, aes(x = mu, y = avg_mu_hat)) +
   )
 ```
 
+When the value of true mu or the effect is large, the null hypothesis is more likely to be rejected and the estimate of mu will be closer to the true value.
+
 ## part e
 ```{r}
 avg_estimate_rejected = simulation_results_df |> 
@@ -114,7 +116,7 @@ avg_estimate_rejected = simulation_results_df |>
   )
 ```
 
-```{r}
+```{r warning = FALSE}
 ggplot() +
   geom_line(data = avg_estimate_results, aes(x = mu, y = avg_mu_hat), color = "navy") +
   geom_point(data = avg_estimate_results, aes(x = mu, y = avg_mu_hat), color = "navy") +
@@ -130,10 +132,23 @@ ggplot() +
   theme(legned.position = "none")
 ```
 
+The navy line represents the average estimate of mu hat across all simulations, which gets closer to the true mu value as the true mu increases. 
+
+The maroon line represents the average estimate of mu hat for only the simulations where the null hypothesis was rejected. The line gets closer to the true mu value as the true mu increases. 
+
 # Problem 3
 
+The raw data is broken up into multiple features such as case information, location details, victim information, and case status. Within case information, the data includes case ID for each homicide case, date of each incident, and the year the homicide took place. Under location details, the data include the city, state, and longitude and latitude of each incident. Within victim information, the data represents the victim name, age at time of death, gender, and race or ethnicity. Lastly, within case status, the data shows disposition which is the status of the case including:  
+
+*     "Open/No arrest" where no arrest was made and the case is open.   
+*     "Closed without arrest" where the case is closed, but no arrest was made.   
+
+*     "Closed by arrest" wherre the case is closed and an arrest was made.   
+  
+There are a few limitations with the data, primarily that the data only focuses on a select number of cities across the United States which may not depict an accurate representation of the entire country. 
+
 ## part a
-```{r}
+```{r message = FALSE}
 homicide_df = read_csv(file = "./data/homicide-data.csv")
 ```
 
@@ -190,7 +205,7 @@ conf_int = tidy_result |>
 
 
 ## part c
-```{r}
+```{r warning = FALSE}
 city_result = city_summary |> 
   rowwise() |> 
   mutate(
